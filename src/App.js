@@ -1,50 +1,28 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import OrdersIndex from "./components/orders/OrdersList";
-
-import { ModalProvider } from "./contexts/ModalContext";
-import ModalComponent from "./components/modal/Modal";
-import CustomModal from "./components/modal/CustomeModal";
-import { useState } from "react";
+import OrdersList from "./components/orders/List";
+import { OrderProvider } from "./contexts/OrderContext";
+import { ConfigProvider } from "./contexts/ConfigContext";
 
 function App() {
-
-
-  const [showModal, setShowModal] = useState(false)
-
-
   return (
-    <ModalProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<ModalComponent />} />
-          {/* TODO: Should be element= or component= ? */}
-          <Route path="/orders" element={<OrdersIndex setShowModal={setShowModal} />} />
-        </Routes>
-      </Router>
-
-      < CustomModal showModal={showModal} />
-    </ModalProvider >
+    <div className="text-muted fs-6 fw-light">
+      {/* TODO: Remove inline styles!! */}
+      <nav className="navbar navbar-light bg-light ml-1" style={{ marginLeft: "10px" }}>
+        <a className="navbar-brand " href="/orders">Orders manager</a>
+      </nav>
+      < ConfigProvider>
+        <OrderProvider>
+          <Router>
+            <Routes>
+              {/* TODO: Should be element= or component= ? */}
+              <Route path="/" element={<OrdersList />} />
+            </Routes>
+          </Router>
+        </OrderProvider>
+      </ConfigProvider>
+    </div >
   );
 }
 
 export default App;
-
-
-
-// import React from "react";
-// import { ModalProvider } from "./ModalContext"; // Import ModalProvider
-// import ModalComponent from "./Modal"; // Import the ModalComponent
-// import SomeOtherComponent from "./SomeOtherComponent"; // A component that triggers the modal
-// import OrdersList from "./components/orders/OrdersList";
-
-// const App = () => {
-//   return (
-//     <ModalProvider>
-//       <div>
-//         <h1>My App</h1>
-//         <OrdersList />
-//         <ModalComponent /> {/* Render the modal component here */}
-//       </div>
-//     </ModalProvider>
-//   );
-// };
