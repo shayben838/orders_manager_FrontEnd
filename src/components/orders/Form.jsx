@@ -1,33 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { formatHumanReadableDate, getStatusColor, getStatusTitle, formatDateForInput } from "../../utils/orderUtils";
+import { OrderContext } from "../../contexts/OrderContext";
 
-const OrderEditForm = ({ order = {}, statusOptions, handleSave }) => {
+const OrderEditForm = ({ order = {}, statusOptions }) => {
+
+    const { handleSave } = useContext(OrderContext);
+
     const [formData, setFormData] = useState({
         id: order.id || "",
         title: order.title || "",
         order_time: order.order_time || "",
         status: order.status || "",
-        created_at: order.created_at || new Date().toISOString(),
         updated_at: order.updated_at || new Date().toISOString(),
     });
-    // console.log(statusOptions)
-    useEffect(() => {
-        setFormData({
-            id: order.id || "",
-            title: order.title || "",
-            order_time: order.order_time || "",
-            status: order.status || "",
-            created_at: order.created_at || new Date().toISOString(),
-            updated_at: order.updated_at || new Date().toISOString(),
-        });
-    }, [order]); // Updates state when `order` changes
 
+    useEffect(() => {
+        if (order.id !== formData.id && order.id !== undefined) {
+            console.log("OrderEditForm - useEffect")
+            setFormData({
+                id: order.id || "",
+                title: order.title || "",
+                order_time: order.order_time || "",
+                status: order.status || "",
+                created_at: order.created_at || new Date().toISOString(),
+                updated_at: order.updated_at || new Date().toISOString(),
+            });
+        }
+    }, [order]); // Updates state when `order` changes
 
     const handleSubmit = (e) => {
         e.preventDefault();
         handleSave(formData);
     };
-
+    console.log(formData.status)
+    console.log(getStatusColor(formData.status, statusOptions))
     return (
         <form onSubmit={handleSubmit} className="p-4 border rounded shadow bg-light">
             <h3 className="mb-4 fw-bold">Update Order</h3>

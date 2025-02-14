@@ -6,11 +6,11 @@ export const getStatusTitle = (id, statusOptions) => {
 
 export const getStatusColor = (statusId, statusOptions) => {
     const statusMap = {
-        0: { backgroundColor: "#B3D9FF", title: getStatusTitle(0, statusOptions) }, // Soft blue
-        1: { backgroundColor: "#FFF4A3", title: getStatusTitle(1, statusOptions) }, // Soft yellow
-        2: { backgroundColor: "#A3E6A3", title: getStatusTitle(2, statusOptions) }, // Soft green
-        3: { backgroundColor: "#FFCC99", title: getStatusTitle(3, statusOptions) }, // Soft orange
-        4: { backgroundColor: "#D3D3D3", title: getStatusTitle(4, statusOptions) }, // Soft gray
+        1: { backgroundColor: "#B3D9FF", title: getStatusTitle(1, statusOptions) }, // Soft blue
+        2: { backgroundColor: "#FFF4A3", title: getStatusTitle(2, statusOptions) }, // Soft yellow
+        3: { backgroundColor: "#A3E6A3", title: getStatusTitle(3, statusOptions) }, // Soft green
+        4: { backgroundColor: "#FFCC99", title: getStatusTitle(4, statusOptions) }, // Soft orange
+        5: { backgroundColor: "#D3D3D3", title: getStatusTitle(5, statusOptions) }, // Soft gray
     };
 
     const status = statusMap[statusId] || { backgroundColor: "", title: "" };

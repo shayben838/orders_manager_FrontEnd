@@ -16,7 +16,8 @@ const OrdersList = ({ }) => {
     setSort,
     editData,
     setEditData,
-    handleSave 
+    handleSave,
+    count
   } = useContext(OrderContext);
 
   const openEditing = (e) => {
@@ -42,7 +43,7 @@ const OrdersList = ({ }) => {
       </td>
     );
   };
-  console.log(orders)
+  console.log(count)
   return (
     <div>
       {!orders ? (
@@ -62,34 +63,37 @@ const OrdersList = ({ }) => {
                 }}>
                 <Column field="id"
                   title="ID"
-                  width="50px"
+                    width="150px"
                   filter="numeric"
                   editable={false} />
                 <Column field="title"
                   title="Title"
-                  width="200px"
+                    width="250px"
                   filter="text"
                   editable={false} />
+                  <Column
+                    field="status"
+                    title="Status"
+                    width="120px"
+                    editor="numeric"
+                    cells={{ data: CustomStatus }}
+                  />
                 <Column field="order_time"
                   title="Ordered at" width="150px"
                   filter="date"
                   editable={false}
                   cell={(props) => (
-                    <td>{formatHumanReadableDate(props.dataItem.order_time)}</td>
+                    <td className="text-muted small">{formatHumanReadableDate(props.dataItem.order_time)}</td>
                   )}
-                />
-                <Column
-                  field="status"
-                  title="Status"
-                  width="120px"
-                  editor="numeric"
-                  cells={{ data: CustomStatus }}
-                />
+                  />
                 {/* <Column field="created_at" title="Created At" width="150px" filter="date" editable={false} /> */}
                 <Column
                   field="updated_at"
                   title="Updated At" width="150px"
                   filter="date"
+                    cell={(props) => (
+                      <td className="text-muted small">{formatHumanReadableDate(props.dataItem.updated_at)}</td>
+                    )}
                   editable={false} />
               </Grid>
             </div>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import OrdersList from "./components/orders/List";
 import { OrderProvider } from "./contexts/OrderContext";
 
 
 function App() {
+
   return (
     <div className="text-muted fs-6 fw-light">
       {/* TODO: Remove inline style!! */}
