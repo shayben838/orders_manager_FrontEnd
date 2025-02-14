@@ -21,3 +21,9 @@ export const formatHumanReadableDate = (dateString) => {
     if (!dateString) return "N/A";
     return format(new Date(dateString), "EEE, MMM dd, yyyy hh:mm a");
 };
+
+export const formatDateForInput = (isoString) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    return date.toISOString().slice(0, 16); // Keep "YYYY-MM-DDTHH:mm"
+};

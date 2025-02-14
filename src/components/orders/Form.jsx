@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { formatHumanReadableDate, getStatusColor } from "../../utils/orderUtils";
+import { formatHumanReadableDate, getStatusColor, getStatusTitle, formatDateForInput } from "../../utils/orderUtils";
 
 const OrderEditForm = ({ order = {}, statusOptions, handleSave }) => {
     const [formData, setFormData] = useState({
@@ -27,18 +27,6 @@ const OrderEditForm = ({ order = {}, statusOptions, handleSave }) => {
         e.preventDefault();
         handleSave(formData);
     };
-    // TODO: It should be an helper function
-    const getStatusName = (value) => {
-        return Object.entries(statusOptions).find(([key, val]) => val === value)?.[0] || "Select Status";
-    };
-
-    const formatDateForInput = (isoString) => {
-        if (!isoString) return "";
-        const date = new Date(isoString);
-        return date.toISOString().slice(0, 16); // Keep "YYYY-MM-DDTHH:mm"
-    };
-
-
 
     return (
         <form onSubmit={handleSubmit} className="p-4 border rounded shadow bg-light">
@@ -87,7 +75,7 @@ const OrderEditForm = ({ order = {}, statusOptions, handleSave }) => {
                         aria-expanded="false"
                         style={getStatusColor(formData.status, statusOptions).style} // Apply color to the button
                     >
-                        {getStatusName(formData.status)}
+                        {getStatusTitle(formData.status, statusOptions)}
                     </button>
                     <ul className="dropdown-menu">
                         {Object.entries(statusOptions).map(([key, value]) => (
