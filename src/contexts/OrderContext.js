@@ -1,31 +1,47 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { getOrders, updateOrder, pollNewOrders } from "../api/orders";
 import { initialSort } from "../utils/sorting";
+import { getConfigs } from "../api/config";
+import { ConfigContext } from "./ConfigContext";
 
 export const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
+  // State
   const [orders, setOrders] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
   const [sort, setSort] = useState(initialSort);
   const [editData, setEditData] = useState();
-
-  // understand it better (the whole component)
-  // Use useRef for lastId to prevent unnecessary re-renders
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  // Context
+  const { setConfig } = useContext(ConfigContext);
+  // Ref
   const lastIdRef = useRef(0);
   const pollingRef = useRef(null);
+  const pollingIntervalRef = useRef(null);
 
   useEffect(() => {
     (async () => {
-      const data = await getOrders();
-      setOrders(data.orders);
-      setStatusOptions(data.status_options);
-      setEditData(data.orders.at(-1));
-      lastIdRef.current = data.last_id; // Set lastIdRef, avoiding state update here
+      try {
+        const data = await getOrders();
+        const configs = await getConfigs();
+        pollingIntervalRef.current = configs.polling_interval;
 
-      if (!pollingRef.current) {
-        startPolling();
-      };
+        setConfig(configs)
+        setOrders(data.orders);
+        setStatusOptions(data.status_options);
+        setEditData(data.orders.at(-1));
+        lastIdRef.current = data.last_id; // Set lastIdRef, avoiding state update here
+
+        if (!pollingRef.current) {
+          startPolling();
+        };
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoadingOrders(false);
+      }
+
     })();
 
     return () => {
@@ -50,7 +66,7 @@ export const OrderProvider = ({ children }) => {
       } catch (error) {
         console.error("Polling error:", error);
       }
-    }, 5000);
+    }, pollingIntervalRef.current);
   };
 
   const handleSave = async (updatedOrder) => {
@@ -59,10 +75,10 @@ export const OrderProvider = ({ children }) => {
       prevOrders.map((order) => (order.id === data.id ? data : order))
     );
   };
-  console.log(editData)
+
   return (
     <OrderContext.Provider
-      value={{ orders, setOrders, statusOptions, sort, setSort, editData, setEditData, handleSave }}
+      value={{ orders, setOrders, statusOptions, sort, setSort, editData, setEditData, handleSave, loadingOrders }}
     >
       {children}
     </OrderContext.Provider>

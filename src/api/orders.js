@@ -16,7 +16,7 @@ export const getOrders = async () => {
 
 export const updateOrder = async (updatedOrder) => {
   try {
-    ["id", "created_at", "updated_at", "order_time"].forEach(key => delete updatedOrder[key]);
+    ["created_at", "updated_at", "order_time"].forEach(key => delete updatedOrder[key]);
     const response = await fetch(`${API_BASE_URL}/${updatedOrder.id}`, {
       method: "PUT",
       headers: {

@@ -7,11 +7,7 @@ export const startPolling = (lastOrderId, fetchNewOrders, interval = 6000) => {
 
     const checkForNewOrders = async () => {
         console.log("Inside checkForNewOrders")
-        // TODO: Change the last id
-        console.log(lastOrderId)
         const { hasNewOrders, latestId } = await fetchOrdersById(lastOrderId);
-        console.log(hasNewOrders)
-        // debugger
         if (isActive && hasNewOrders) {
             lastOrderId.current = latestId; // Update last order ID
             fetchNewOrders(); // Fetch new orders if available

@@ -5,10 +5,11 @@ import { orderBy } from '@progress/kendo-data-query';
 import EditOrder from "./FormWrapper";
 import { OrderContext } from "../../contexts/OrderContext";
 import { getStatusColor, formatHumanReadableDate } from "../../utils/orderUtils";
+import { ConfigContext } from "../../contexts/ConfigContext";
 
 
 
-const OrdersList = ({ }) => {
+const OrdersList = () => {
   const {
     orders,
     statusOptions,
@@ -17,8 +18,10 @@ const OrdersList = ({ }) => {
     editData,
     setEditData,
     handleSave,
-    count
+    loadingOrders
   } = useContext(OrderContext);
+
+  const { config } = useContext(ConfigContext);
 
   const openEditing = (e) => {
     console.log(e.dataItem)
@@ -28,7 +31,7 @@ const OrdersList = ({ }) => {
   const CustomStatus = (props) => {
     const { field, dataItem } = props;
     const status = dataItem[field];
-    const cellData = getStatusColor(status, statusOptions);
+    const cellData = getStatusColor(status, statusOptions, config.status_map_colors);
     // debugger
     return (
       <td style={cellData.style} >
@@ -43,10 +46,10 @@ const OrdersList = ({ }) => {
       </td>
     );
   };
-  console.log(count)
+
   return (
     <div>
-      {!orders ? (
+      {loadingOrders === true ? (
         <p>Loading...</p>
       ) : (
         <div className="container m-0 p-0">

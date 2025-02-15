@@ -4,13 +4,30 @@ export const getStatusTitle = (id, statusOptions) => {
     return Object.keys(statusOptions).find(key => statusOptions[key] === id);
 };
 
-export const getStatusColor = (statusId, statusOptions) => {
+export const getStatusColor = (statusId, statusOptions, status_map_colors) => {
+    // debugger
+    // console.log(status_map_colors[1].background_color)
     const statusMap = {
-        1: { backgroundColor: "#B3D9FF", title: getStatusTitle(1, statusOptions) }, // Soft blue
-        2: { backgroundColor: "#FFF4A3", title: getStatusTitle(2, statusOptions) }, // Soft yellow
-        3: { backgroundColor: "#A3E6A3", title: getStatusTitle(3, statusOptions) }, // Soft green
-        4: { backgroundColor: "#FFCC99", title: getStatusTitle(4, statusOptions) }, // Soft orange
-        5: { backgroundColor: "#D3D3D3", title: getStatusTitle(5, statusOptions) }, // Soft gray
+        1: {
+            backgroundColor: status_map_colors[1].background_color,
+            title: getStatusTitle(1, statusOptions)
+        },
+        2: {
+            backgroundColor: status_map_colors[2].background_color,
+            title: getStatusTitle(2, statusOptions)
+        },
+        3: {
+            backgroundColor: status_map_colors[3].background_color,
+            title: getStatusTitle(3, statusOptions)
+        },
+        4: {
+            backgroundColor: status_map_colors[4].background_color,
+            title: getStatusTitle(4, statusOptions)
+        },
+        5: {
+            backgroundColor: status_map_colors[5].background_color,
+            title: getStatusTitle(5, statusOptions)
+        },
     };
 
     const status = statusMap[statusId] || { backgroundColor: "", title: "" };
