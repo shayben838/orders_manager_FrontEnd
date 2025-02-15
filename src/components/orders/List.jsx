@@ -58,18 +58,18 @@ const OrdersList = () => {
       ) : (
           <div className="container m-1 p-1">
             <div className="row" >
-              <div className="col-8">
+              <div className="col-md-8 col-12">
 
                 <OrderStatusButtons />
               </div>
-              <div className="col-4">
+              <div className="col-md-4 col-12">
 
                 <CreateOrderButton />
               </div>
             </div>
 
             <div className="row d-flex" style={{ height: height }}>
-              <div className="col-8 d-flex flex-column">
+              <div className="col-md-8 col-12 d-flex flex-column">
                 <Grid
                   data={orderBy(filterOrders, sort)}
                   style={{ flexGrow: 1, height: height }}
@@ -126,7 +126,7 @@ const OrdersList = () => {
               </Grid>
             </div>
 
-              <div className="col-4 d-flex flex-column">
+              <div className="col-md-4 col-12 d-flex flex-column">
               <EditOrder
                 editData={editData}
                 statusOptions={statusOptions}
