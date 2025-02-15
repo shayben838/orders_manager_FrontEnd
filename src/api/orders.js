@@ -48,3 +48,22 @@ export const pollNewOrders = async (lastOrderId) => {
     return { hasNewOrders: false, latestId: lastOrderId };
   }
 };
+
+
+export const createOrder = async () => {
+  try {
+    const response = await fetch(API_BASE_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to create order");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating order:", error);
+    return null;
+  }
+};

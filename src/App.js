@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import OrdersList from "./components/orders/List";
-import { OrderContext, OrderProvider } from "./contexts/OrderContext";
-import { ConfigContext, ConfigProvider } from "./contexts/ConfigContext";
+import { OrderProvider } from "./contexts/OrderContext";
+import { ConfigProvider } from "./contexts/ConfigContext";
 
 function App() {
   return (
     <div className="text-muted fs-6 fw-light">
-      {/* TODO: Remove inline style!! */}
+      {/* TODO: Remove inline styles!! */}
       <nav className="navbar navbar-light bg-light ml-1" style={{ marginLeft: "10px" }}>
         <a className="navbar-brand " href="/orders">Orders manager</a>
       </nav>
@@ -16,7 +16,7 @@ function App() {
           <Router>
             <Routes>
               {/* TODO: Should be element= or component= ? */}
-              <Route path="/orders" element={<OrdersList />} />
+              <Route path="/" element={<OrdersList />} />
             </Routes>
           </Router>
         </OrderProvider>

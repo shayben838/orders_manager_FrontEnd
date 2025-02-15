@@ -75,7 +75,7 @@ const OrderEditForm = ({ order = {}, statusOptions }) => {
                 <label className="form-label fw-medium">Status</label>
                 <div className="dropdown">
                     <button
-                        className={`btn dropdown-toggle`}
+                        className="btn dropdown-toggle"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"

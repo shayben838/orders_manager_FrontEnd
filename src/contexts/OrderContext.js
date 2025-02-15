@@ -1,16 +1,22 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { filterBy } from '@progress/kendo-data-query';
 import { getOrders, updateOrder, pollNewOrders } from "../api/orders";
 import { initialSort } from "../utils/sorting";
+import { initialFilter } from "../utils/filtering";
 import { getConfigs } from "../api/config";
 import { ConfigContext } from "./ConfigContext";
+
 
 export const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
   // State
   const [orders, setOrders] = useState([]);
+  const [filterOrders, setFilteredOrders] = useState([]);
+  // setFilteredOrders
   const [statusOptions, setStatusOptions] = useState([]);
   const [sort, setSort] = useState(initialSort);
+  const [filter, setFilter] = useState(initialFilter)
   const [editData, setEditData] = useState();
   const [loadingOrders, setLoadingOrders] = useState(true);
   // Context
@@ -28,7 +34,9 @@ export const OrderProvider = ({ children }) => {
         pollingIntervalRef.current = configs.polling_interval;
 
         setConfig(configs)
+        const filteredOrders = filterBy(data.orders, filter);
         setOrders(data.orders);
+        setFilteredOrders(filteredOrders)
         setStatusOptions(data.status_options);
         setEditData(data.orders.at(-1));
         lastIdRef.current = data.last_id; // Set lastIdRef, avoiding state update here
@@ -52,6 +60,11 @@ export const OrderProvider = ({ children }) => {
     };
   }, []);
 
+  useEffect(() => {
+    setFilteredOrders(filterBy(orders, filter));
+  }, [orders, filter]); // Runs whenever `orders` or `filter` changes
+
+
   const startPolling = () => {
     if (pollingRef.current) return; // Prevent duplicate intervals
 
@@ -59,9 +72,10 @@ export const OrderProvider = ({ children }) => {
       try {
         console.log("Polling...");
         const newOrders = await pollNewOrders(lastIdRef.current);
+
         if (newOrders.length > 0) {
-          setOrders((prevOrders) => [...prevOrders, ...newOrders]);
-          lastIdRef.current = newOrders.at(-1).id;
+          updateOrders(newOrders);
+          lastIdRef.current = newOrders.at(-1).id; // Update lastId safely
         }
       } catch (error) {
         console.error("Polling error:", error);
@@ -69,16 +83,53 @@ export const OrderProvider = ({ children }) => {
     }, pollingIntervalRef.current);
   };
 
-  const handleSave = async (updatedOrder) => {
-    const data = await updateOrder(updatedOrder);
-    setOrders((prevOrders) =>
-      prevOrders.map((order) => (order.id === data.id ? data : order))
-    );
+  const updateOrders = (newOrders) => {
+    setOrders((prevOrders) => [...prevOrders, ...newOrders]); // Only update orders
   };
+
+  const handleSave = async (updatedOrder) => {
+    try {
+      const data = await updateOrder(updatedOrder); // Update backend
+
+      setOrders((prevOrders) => {
+        const updatedOrders = prevOrders.map((order) =>
+          order.id === data.id ? data : order
+        );
+
+        return updatedOrders;
+      });
+    } catch (error) {
+      console.error("Error updating order:", error);
+    }
+  };
+
+
+  const handleFilterChange = (status) => {
+    const newFilter = {
+      logic: "and",
+      filters: [
+        {
+          field: "status",
+          operator: "eq",
+          value: status  // Change value dynamically
+        }
+      ]
+    };
+    setFilter(newFilter);
+    const filteredOrders = filterBy(orders, newFilter);
+    setFilteredOrders(filteredOrders);
+  }
 
   return (
     <OrderContext.Provider
-      value={{ orders, setOrders, statusOptions, sort, setSort, editData, setEditData, handleSave, loadingOrders }}
+      value={{
+        orders, setOrders,
+        statusOptions,
+        sort, setSort,
+        editData, setEditData, handleSave,
+        loadingOrders, filter, setFilter,
+        filterOrders, setFilteredOrders, handleFilterChange
+      }}
     >
       {children}
     </OrderContext.Provider>
