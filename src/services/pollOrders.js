@@ -9,8 +9,8 @@ export const startPolling = (lastOrderId, fetchNewOrders, interval = 6000) => {
         console.log("Inside checkForNewOrders")
         const { hasNewOrders, latestId } = await fetchOrdersById(lastOrderId);
         if (isActive && hasNewOrders) {
-            lastOrderId.current = latestId; // Update last order ID
-            fetchNewOrders(); // Fetch new orders if available
+            lastOrderId.current = latestId;
+            fetchNewOrders();
         }
     };
 

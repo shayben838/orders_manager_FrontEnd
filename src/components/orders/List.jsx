@@ -36,7 +36,6 @@ const OrdersList = () => {
     const { field, dataItem } = props;
     const status = dataItem[field];
     const cellData = getStatusColor(status, statusOptions, config.status_map_colors);
-    // debugger
     return (
       <td style={cellData.style} >
         <div className="row">
@@ -51,6 +50,7 @@ const OrdersList = () => {
     );
   };
   const height = "300px"
+
   return (
     <div>
       {loadingOrders === true ? (
@@ -131,7 +131,7 @@ const OrdersList = () => {
                 editData={editData}
                 statusOptions={statusOptions}
                   handleSave={handleSave}
-                  style={{ flexGrow: 1 }}  // Allow EditOrder to grow if needed
+                  style={{ flexGrow: 1 }}
                 />
               </div>
           </div>

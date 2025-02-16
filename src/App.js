@@ -15,7 +15,6 @@ function App() {
         <OrderProvider>
           <Router>
             <Routes>
-              {/* TODO: Should be element= or component= ? */}
               <Route path="/" element={<OrdersList />} />
             </Routes>
           </Router>

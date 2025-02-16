@@ -5,8 +5,6 @@ export const getStatusTitle = (id, statusOptions) => {
 };
 
 export const getStatusColor = (statusId, statusOptions, status_map_colors) => {
-    // debugger
-    // console.log(status_map_colors[1].background_color)
     const statusMap = {
         1: {
             backgroundColor: status_map_colors[1].background_color,

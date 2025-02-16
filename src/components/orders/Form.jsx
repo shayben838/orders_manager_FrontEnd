@@ -28,7 +28,7 @@ const OrderEditForm = ({ order = {}, statusOptions }) => {
                 updated_at: order.updated_at || new Date().toISOString(),
             });
         }
-    }, [order]); // Updates state when `order` changes
+    }, [order]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

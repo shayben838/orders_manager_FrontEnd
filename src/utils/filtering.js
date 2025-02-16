@@ -3,8 +3,8 @@ export const initialFilter = {
     filters: [
         {
             field: "status",
-            operator: "eq",  // Equals
-            value: 1 // Filtering orders where status === 1
+            operator: "eq",
+            value: 1
         }
     ]
 };

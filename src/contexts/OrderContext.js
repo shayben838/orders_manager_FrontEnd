@@ -62,7 +62,7 @@ export const OrderProvider = ({ children }) => {
 
   useEffect(() => {
     setFilteredOrders(filterBy(orders, filter));
-  }, [orders, filter]); // Runs whenever `orders` or `filter` changes
+  }, [orders, filter]);
 
 
   const startPolling = () => {
@@ -75,7 +75,7 @@ export const OrderProvider = ({ children }) => {
 
         if (newOrders.length > 0) {
           updateOrders(newOrders);
-          lastIdRef.current = newOrders.at(-1).id; // Update lastId safely
+          lastIdRef.current = newOrders.at(-1).id;
         }
       } catch (error) {
         console.error("Polling error:", error);
@@ -84,12 +84,12 @@ export const OrderProvider = ({ children }) => {
   };
 
   const updateOrders = (newOrders) => {
-    setOrders((prevOrders) => [...prevOrders, ...newOrders]); // Only update orders
+    setOrders((prevOrders) => [...prevOrders, ...newOrders]);
   };
 
   const handleSave = async (updatedOrder) => {
     try {
-      const data = await updateOrder(updatedOrder); // Update backend
+      const data = await updateOrder(updatedOrder);
 
       setOrders((prevOrders) => {
         const updatedOrders = prevOrders.map((order) =>
@@ -111,7 +111,7 @@ export const OrderProvider = ({ children }) => {
         {
           field: "status",
           operator: "eq",
-          value: status  // Change value dynamically
+          value: status
         }
       ]
     };
